@@ -1,0 +1,222 @@
+ MATLAB CODE FOR SOLVING OPTIMALITY SYSTEM WITH FOURTH ORDER RUNGE-KUTTA SCHEME USING FORWARD-BACKWARD SWEEP APPROACH
+\begin{verbatim}
+	function y = Halima(B1,B2,B3,B4,e,g,w4,w5,w6)
+	global t h h2 N
+	test = -1;
+	delta = 0.001;
+	N = 100;
+	t = linspace(0, 100, N+1);
+	h = 10/N;
+	h2 = h/2;
+	d = 0.0024;
+	d1 = 0.0021;
+	a = 0.3465;
+	D = 0.0003465;
+	p = 0.1;
+	r = 0.333;
+	v = 0.04;
+	
+	% Assigning weights to each of the terms in the Objective functional
+	w1 = 10;
+	w2 = 10;
+	w3 = 10;
+	
+	x10 = 223793053;
+	x20 = 9155;
+	x30 = 1270;
+	x40 = 381;
+	x50 = 3;
+	x60 = 15000000;
+	x70 = 5000;
+	
+	% Assigning bouds to each of the control variables
+	u1max = 0.7;
+	u2max = 0.4;
+	u3max = 0.5;
+	
+	
+	% Pre-allocating memory space for control variables
+	u1 = zeros(1,N+1);
+	u2 = zeros(1,N+1);
+	u3 = zeros(1,N+1);
+	
+	
+	% Pre-allocating memory space for states variables
+	x1 = zeros(1,N+1);
+	x2 = zeros(1,N+1);
+	x3 = zeros(1,N+1);
+	x4 = zeros(1,N+1);
+	x5 = zeros(1,N+1);
+	x6 = zeros(1,N+1);
+	x7 = zeros(1,N+1);
+	
+	
+	% Setting the initial coditions for the state variables
+	x1(1) = x10;
+	x2(1) = x20;
+	x3(1) = x30;
+	x4(1) = x40;
+	x5(1) = x50;
+	x6(1) = x60;
+	x7(1) = x70;
+	
+	% Pre-allocating memory space for adjoint variables
+	lambda1 = zeros(1,N+1);
+	lambda2 = zeros(1,N+1);
+	lambda3 = zeros(1,N+1);
+	lambda4 = zeros(1,N+1);
+	lambda5 = zeros(1,N+1);
+	lambda6 = zeros(1,N+1);
+	lambda7 = zeros(1,N+1);
+	
+	while (test < 0)
+	% This step stores current values  as previous ones
+	% Storing the preceeding values of the control variables
+	oldu1 = u1;
+	oldu2 = u2;
+	oldu3 = u3;
+	
+	% Storing the preceeding values of the state variables
+	oldx1 = x1;
+	oldx2 = x2;
+	oldx3 = x3;
+	oldx4 = x4;
+	oldx5 = x5;
+	oldx6 = x6;
+	oldx7 = x7;
+	
+	% Storing the preceeding values of the adjoint variables
+	oldlambda1 = lambda1;
+	oldlambda2 = lambda2;
+	oldlambda3 = lambda3;
+	oldlambda4 = lambda4;
+	oldlambda5 = lambda5;
+	oldlambda6 = lambda6;
+	oldlambda7 = lambda7;
+	
+	
+	% forward sweep with RK order 4  to evaluate the state variables
+	% if (k-lambda1(N+1)*x1(N+1) < 0)
+	for i = 1:N
+	
+	k1 = a-((1-u1(i))*B1*x1(i)*x7(i))/(x6(i)+x7(i))-((1-u1(i))*B2*x1(i)*x3(i))/(x1(i)
+	+x2(i)+x3(i)+x4(i)+x5(i))-((1-u1(i))*B3*x1(i)*x4(i))/(x1(i)+x2(i)
+	+x3(i)+x4(i)+x5(i)) + g*x5(i) - D*x1(i);
+	
+	l1 =((1-u1(i))*B1*x1(i)*x7(i))/(x6(i)+x7(i))-((1-u1(i))*B2*x1(i)*x3(i))/(x1(i)
+	+x2(i)+x3(i)+x4(i)+x5(i))-((1-u1(i))*B3*x1(i)*x4(i))/(x1(i)
+	+x2(i)+x3(i)+x4(i)+x5(i)) - r*x2(i) - D*x2(i);
+	
+	m1 = x2(i)*r-x3(i)*D-x3(i)*e-x3(i)*d;
+	
+	n1 = x3(i)*e-x4(i)*D-x4(i)*u2(i)-x4(i)*d1;
+	
+	p1 = x4(i)*u2(i)-x5(i)*D-g*x5(i);
+	
+	q1 = p-(B4*x6(i)*x7(i))/(x6(i)+x7(i))-u3(i)*x6(i)-v*x6(i);
+	
+	z1 = (B4*x6(i)*x7(i))/(x6(i)+x7(i))-u3(i)*x7(i)-v*x7(i);
+	
+	
+	
+	
+	k2 = a-((1-(0.5*(u1(i)+u1(i+1))))*B1*(x1(i)+h2*k1)*(x7(i)+h2*z1))/((x6(i)+h2*q1)
+	+(x7(i)+h2*z1))-((1-(u1(i)+u1(i+1)))*B2*(x1(i)+h2*k1)*(x3(i)+h2*m1))/((x1(i)+h2*k1)
+	+(x2(i)+h2*l1)+(x3(i)+h2*m1)+(x4(i)+h2*n1)+(x5(i)+h2*p1))-((1-(u1(i)+u1(i+1)))
+	*B3*(x1(i)+h2*k1)*(x4(i)+h2*n1))/((x1(i)+h2*k1)+(x2(i)+h2*l1)+(x3(i)+h2*m1)
+	+(x4(i)+h2*n1)+(x5(i)+h2*p1))+g*(x5(i)+h2*p1)-D*(x1(i)+h2*k1);
+	
+	l2 =((1-(0.5*(u1(i)+u1(i+1))))*B1*(x1(i)+h2*k1)*(x7(i)+h2*z1))/((x6(i)+h2*q1)
+	+(x7(i)+h2*z1))-((1-(u1(i)+u1(i+1)))*B2*(x1(i)+h2*k1)*(x3(i)+h2*m1))/((x1(i)+h2*k1)
+	+(x2(i)+h2*l1)+(x3(i)+h2*m1)+(x4(i)+h2*n1)+(x5(i)+h2*p1))-((1-(u1(i)+u1(i+1)))
+	*B3*(x1(i)+h2*k1)*(x4(i)+h2*n1))/((x1(i)+h2*k1)+(x2(i)+h2*l1)+(x3(i)+h2*m1)
+	+(x4(i)+h2*n1)+(x5(i)+h2*p1))-r*(x2(i)+h2*l1)-D*(x2(i)+h2*l1);
+	
+	m2 = (x2(i)+h2*l1)*r-(x3(i)+h2*m1)*D-(x3(i)+h2*m1)*e-(x3(i)+h2*m1)*d;
+	
+	n2 = (x3(i)+h2*m1)*e-(x4(i)+h2*n1)*D-(x4(i)+h2*n1)*(0.5*(u2(i)
+	+ u2(i+1)))-(x4(i)+h2*n1)*d1;
+	
+	p2 = (x4(i)+h2*n1)*(0.5*(u2(i)+ u2(i+1)))-(x5(i)+h2*p1)*D-g*(x5(i)+h2*p1);
+	
+	q2 = p-(B4*(x6(i)+h2*q1)*(x7(i)+h2*z1))/((x6(i)+h2*q1)+(x7(i)+h2*z1))-(0.5*(u3(i)
+	+ u3(i+1)))*(x6(i)+h2*q1)-v*(x6(i)+h2*q1);
+	
+	z2 = (B4*(x6(i)+h2*q1)*(x7(i)+h2*z1))/((x6(i)+h2*q1)+(x7(i)+h2*z1))-(0.5*(u3(i)
+	+ u3(i+1)))*(x7(i)+h2*z1)-v*(x7(i)+h2*z1);
+	
+	
+	
+	k3 = a-((1-(0.5*(u1(i)+u1(i+1))))*B1*(x1(i)+h2*k2)*(x7(i)+h2*z2))/((x6(i)+h2*q2)
+	+(x7(i)+h2*z2))-((1-(u1(i)+u1(i+1)))*B2*(x1(i)+h2*k2)*(x3(i)+h2*m2))/((x1(i)+h2*k2)
+	+(x2(i)+h2*l2)+(x3(i)+h2*m2)+(x4(i)+h2*n2)+(x5(i)+h2*p2))-((1-(u1(i)+u1(i+1)))*
+	B3*(x1(i)+h2*k2)*(x4(i)+h2*n2))/((x1(i)+h2*k2)+(x2(i)+h2*l2)+(x3(i)+h2*m2)
+	+(x4(i)+h2*n2)+(x5(i)+h2*p2))+g*(x5(i)+h2*p2)-D*(x1(i)+h2*k2);
+	
+	l3 =((1-(0.5*(u1(i)+u1(i+1))))*B1*(x1(i)+h2*k2)*(x7(i)+h2*z2))/((x6(i)+h2*q2)+(x7(i)
+	+h2*z2))-((1-(u1(i)+u1(i+1)))*B2*(x1(i)+h2*k2)*(x3(i)+h2*m2))/((x1(i)+h2*k2)
+	+(x2(i)+h2*l2)+(x3(i)+h2*m2)+(x4(i)+h2*n2)+(x5(i)+h2*p2))-((1-(u1(i)+u1(i+1)))*
+	B3*(x1(i)+h2*k2)*(x4(i)+h2*n2))/((x1(i)+h2*k2)+(x2(i)+h2*l2)+(x3(i)+h2*m2)
+	+(x4(i)+h2*n2)+(x5(i)+h2*p2))-r*(x2(i)+h2*l2)-D*(x2(i)+h2*l2);
+	
+	m3 = (x2(i)+h2*l2)*r-(x3(i)+h2*m2)*D-(x3(i)+h2*m2)*e-(x3(i)+h2*m2)*d;
+	
+	n3 = (x3(i)+h2*m2)*e-(x4(i)+h2*n2)*D-(x4(i)+h2*n2)*(0.5*(u2(i)
+	+ u2(i+1)))-(x4(i)+h2*n2)*d1;
+	
+	p3 = (x4(i)+h2*n2)*(0.5*(u2(i)+ u2(i+1)))-(x5(i)+h2*p2)*D-g*(x5(i)+h2*p2);
+	
+	q3 = p-(B4*(x6(i)+h2*q2)*(x7(i)+h2*z2))/((x6(i)+h2*q2)+(x7(i)+h2*z2))-(0.5*(u3(i)
+	+ u3(i+1)))*(x6(i)+h2*q2)-v*(x6(i)+h2*q2);
+	
+	z3 = (B4*(x6(i)+h2*q2)*(x7(i)+h2*z2))/((x6(i)+h2*q2)+(x7(i)+h2*z2))-(0.5*(u3(i)
+	+ u3(i+1)))*(x7(i)+h2*z2)-v*(x7(i)+h2*z2);
+	
+	
+	
+	
+	k4 = a-((1-(0.5*(u1(i)+u1(i+1))))*B1*(x1(i)+h*k3)*(x7(i)+h*z3))/((x6(i)+h*q3)+(x7(i)+h*z3))
+	-((1-(u1(i)+u1(i+1)))*B2*(x1(i)+h*k3)*(x3(i)+h*m3))/((x1(i)+h*k3)+(x2(i)+h*l3)+(x3(i)
+	+h*m3)+(x4(i)+h*n3)+(x5(i)+h*p3))-((1-(u1(i)+u1(i+1)))*B3*(x1(i)+h*k3)*
+	(x4(i)+h*n3))/((x1(i)+h*k3)+(x2(i)+h*l3)+(x3(i)+h*m3)+(x4(i)+h*n3)+(x5(i)+h*p3))
+	+g*(x5(i)+h*p3)-D*(x1(i)+h*k3);
+	
+	l4 = ((1-(0.5*(u1(i)+u1(i+1))))*B1*(x1(i)+h*k3)*(x7(i)+h*z3))/((x6(i)+h*q3)+(x7(i)+h*z3))
+	-((1-(u1(i)+u1(i+1)))*B2*(x1(i)+h*k3)*(x3(i)+h*m3))/((x1(i)+h*k3)+(x2(i)+h*l3)+(x3(i)
+	+h*m3)+(x4(i)+h*n3)+(x5(i)+h*p3))-((1-(u1(i)+u1(i+1)))*B3*(x1(i)+h*k3)*
+	(x4(i)+h*n3))/((x1(i)+h*k3)+(x2(i)+h*l3)+(x3(i)+h*m3)+(x4(i)+h*n3)+(x5(i)+h*p3))
+	-r*(x2(i)+h*l3)-D*(x2(i)+h*l3);
+	
+	m4 = (x2(i)+h*l3)*r-(x3(i)+h*m3)*D-(x3(i)+h*m3)*e-(x3(i)+h*m3)*d;
+	
+	n4 = (x3(i)+h*m3)*e-(x4(i)+h*n3)*D-(x4(i)+h*n3)*(0.5*(u2(i)+ u2(i+1)))-(x4(i)+h*n3)*d1;
+	
+	p4 = (x4(i)+h*n3)*(0.5*(u2(i)+ u2(i+1)))-(x5(i)+h*p3)*D-g*(x5(i)+h*p3);
+	
+	q4 = p-(B4*(x6(i)+h*q3)*(x7(i)+h*z3))/((x6(i)+h*q3)+(x7(i)+h*z3))-(0.5*(u3(i)
+	+ u3(i+1)))*(x6(i)+h*q3)-v*(x6(i)+h*q3);
+	
+	z4 = (B4*(x6(i)+h*q3)*(x7(i)+h*z3))/((x6(i)+h*q3)+(x7(i)+h*z3))-(0.5*(u3(i)
+	+ u3(i+1)))*(x7(i)+h*z3)-v*(x7(i)+h*z3);
+	
+	
+	
+	x1(i+1) = x1(i) + (h/6)*(k1 + 2*k2 + 2*k3 + k4);
+	
+	x2(i+1) = x2(i) + (h/6)*(l1 + 2*l2 + 2*l3 + l4);
+	
+	x3(i+1) = x3(i) + (h/6)*(m1 + 2*m2 + 2*m3 + m4);
+	
+	x4(i+1) = x4(i) + (h/6)*(n1 + 2*n2 + 2*n3 + n4);
+	
+	x5(i+1) = x5(i) + (h/6)*(p1 + 2*p2 + 2*p3 + p4);
+	
+	x6(i+1) = x6(i) + (h/6)*(q1 + 2*q2 + 2*q3 + q4);
+	
+	x7(i+1) = x7(i) + (h/6)*(z1 + 2*z2 + 2*z3 + z4);
+	
+	
+	
+	end
+	
+	
