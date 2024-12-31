@@ -1,0 +1,257 @@
+SCRIPT FILE TO EXECUTE OPTIMALITY SYSTEM WITH RUNGE-KUTTA MATLAB CODE
+	    \begin{verbatim}
+	    	close
+	    	% global b,d,alpha,B,x10,x20  
+	    	flag1=0;
+	    	flag2=0;
+	    	flag3=0;
+	    	%flag3=0;
+	    	%flag4=0;0.03
+	    	%y = Halima3(B1,B2,B3,B4,e,g,u2,u3)
+	    	while(flag1==0)
+	    	
+	    	var3 = input('Enter a non-negative value for 
+	    	the disease Rodent-Human transmission rate Beta1: ');
+	    	B1 = var3;
+	    	
+	    	var4 = input('Enter a non-negative value for 
+	    	the disease Human-Human transmission rate Beta2: ');    
+	    	B2 = var4;
+	    	
+	    	var5 = input('Enter a non-negative value for 
+	    	the disease Hospitalized-Human transmission rate Beta3: ');
+	    	B3 = var5;
+	    	
+	    	var6 = input('Enter a non-negative value for
+	    	 the disease Rodent-Rodent transmission rate Beta4: ');
+	    	B4 = var6;
+	    	
+	    	var10 = input('Enter a non-negative value for
+	    	 progression rate (tau) into H - tau: ');
+	    	e =var10;
+	    	
+	    	var11 = input('Enter a non-negative value for 
+	    	immunity waning rate (omega) into S - omega: ');
+	    	g =var11;
+	    	
+	    	var20 = input('Enter a non-negative 
+	    	recovery rate theta: ');
+	    	u2 = var20;
+	    	
+	    	var21 = input('Enter a non-negative human induced 
+	    	dealth of rodent sigma: ');
+	    	u3 = var21;
+	    	flag1=1;
+	    	end
+	    	
+	    	
+	    	disp('           ')
+	    	disp('One moment please...')
+	    	disp('    ')
+	    	y1 = Lassa1(B1,B2,B3,B4,e,g,u2,u3);
+	    	while(flag2==0)
+	    	
+	    	%var44 = input('Enter a non-negative value for 
+	    	the disease Rodent-Human transmission rate Beta1: ');
+	    	%B1 = var44;
+	    	
+	    	var45 = input('Enter a non-negative value for
+	    	 the disease Human-Human transmission rate Beta2: ');    
+	    	B2 = var45;
+	    	
+	    	%var46 = input('Enter a non-negative value for 
+	    	the disease Hospitalized-Human transmission rate Beta3: ');
+	    	%B3 = var46;
+	    	
+	    	%var47 = input('Enter a non-negative value for
+	    	 the disease Rodent-Rodent transmission rate Beta4: ');
+	    	%B4 = var47;
+	    	
+	    	%var49 = input('Enter a non-negative value for
+	    	 progression rate (tau) into H - tau: ');
+	    	%e =var49;
+	    	
+	    	%var50 = input('Enter a non-negative value for 
+	    	immunity waning rate (omega) into S - omega: ');
+	    	%g =var50;
+	    	
+	    	%var52 = input('Enter a non-negative 
+	    	recovery rate theta: ');
+	    	%u2 = var52;
+	    	
+	    	%var53 = input('Enter a non-negative human induced 
+	    	dealth of rodent sigma: ');
+	    	%u3 = var53;
+	    	flag2=2;
+	    	end
+	    	disp('           ')
+	    	disp('One moment please...')
+	    	disp('    ')
+	    	y2 = Lassa1(B1,B2,B3,B4,e,g,u2,u3);  
+	    	while(flag3==0)
+	    	
+	    	%var44 = input('Enter a non-negative value for 
+	    	the disease Rodent-Human transmission rate Beta1: ');
+	    	%B1 = var44;
+	    	
+	    	var45 = input('Enter a non-negative value for 
+	    	the disease Human-Human transmission rate Beta2: ');    
+	    	B2 = var45;
+	    	
+	    	%var46 = input('Enter a non-negative value for
+	    	 the disease Hospitalized-Human transmission rate Beta3: ');
+	    	%B3 = var46;
+	    	
+	    	%var47 = input('Enter a non-negative value for
+	    	 the disease Rodent-Rodent transmission rate Beta4: ');
+	    	%B4 = var47;
+	    	
+	    	%var49 = input('Enter a non-negative value for 
+	    	progression rate (tau) into H - tau: ');
+	    	%e =var49;
+	    	
+	    	%var50 = input('Enter a non-negative value for 
+	    	immunity waning rate (omega) into S - omega: ');
+	    	%g =var50;
+	    	
+	    	%var52 = input('Enter a non-negative recovery
+	    	 rate theta: ');
+	    	%u2 = var52;
+	    	
+	    	%var53 = input('Enter a non-negative human induced 
+	    	dealth of rodent sigma: ');
+	    	%u3 = var53;
+	    	y3 = Halima3(B1,B2,B3,B4,e,g,u2,u3);
+	    	flag3=1;
+	    	end 
+	    	
+	    	
+	    	% Plot of the prevalence for the two different scenerios
+	    	figure (1); plot(y1(1,:),y1(3,:)+y1(4,:)+y1(5,:),'r-',y2(1,:),y2(3,:)+
+	    	y2(4,:)+y2(5,:),'b-.',y3(1,:),y3(3,:)+y3(4,:)+y3(5,:),'g-.',
+	    	'LineWidth',3),grid
+	    	xlabel('Time (days)')
+	    	ylabel('Prevalence population (millions)')
+	    	legend('\beta_2 = 3.5 ','\beta_2 = 1.5 ','\beta_2 = 0.000012 ')
+	    	%legend('\omega = 0.5 ','\omega = 0.0001 ')
+	    	%legend('\varpi31 =0.01 , \varpi41 =1000, \varpi51 = 1000', 
+	    	'\varpi32 =1000,\varpi42 =0.01, \varpi52 = 1000', '\varpi33 = 1000 ,
+	    	\varpi43 = 1000, \varpi53 = 0.01')
+	    	
+	    	
+	    	
+	    	% Plot of the incidence for the two different scenerios
+	    	figure (2); plot(y1(1,:),(((1./( y1(7,:)+y1(8,:))).*B1.*y1(2,:).*y1(7,:))+
+	    	((1./( y1(2,:)+y1(3,:)+y1(4,:)+y1(5,:)+y1(6,:))).*B2.*y1(2,:).*y1(3,:))
+	    	 + ((1./( y1(2,:)+y1(3,:)+y1(4,:)+y1(5,:)+y1(6,:))).*B3.*y1(2,:).*y1(4,:))),
+	    	'r-',y2(1,:),((1./( y2(7,:)+y2(8,:))).*B1.*y2(2,:).*y2(7,:))+((1./( y2(2,:)
+	    	+y2(3,:)+y2(4,:)+y2(5,:)+y2(6,:))).*B2.*y2(2,:).*y2(3,:))+
+	    	((1./( y2(2,:)+y2(3,:)+y2(4,:)+y2(5,:)+y2(6,:))).*B3.*y2(2,:).*y2(4,:)),
+	    	'g-.',y3(1,:),((1./( y3(7,:)+y3(8,:))).*B1.*y3(2,:).*y3(7,:))+
+	    	((1./( y3(2,:)+y3(3,:)+y3(4,:)+y3(5,:)+y3(6,:))).*B2.*y3(2,:).*y3(3,:))+
+	    	((1./(y3(2,:)+y3(3,:)+y3(4,:)+y3(5,:)+y3(6,:))).*B3.*y3(2,:).*y3(4,:)),'b-
+	    	.','LineWidth',3),grid
+	    	xlabel('Time (days)')
+	    	ylabel(' Lassa Fever new cases (millions)')
+	    	%legend('\tau = 3.5 ','\tau = 1.5 ','\tau = 0.000012 ')
+	    	legend('\beta_2 = 3.5 ','\beta_2 = 1.5 ','\beta_2 = 0.000012 ')
+	    	%legend('\varpi31 =0.01 , \varpi41 =1000, \varpi51 = 1000',
+	    	 '\varpi32 =1000,\varpi42 =0.01, \varpi52 = 1000',
+	    	 '\varpi33 = 1000 ,\varpi43 = 1000, \varpi53 = 0.01')
+	    	
+	    	
+	    	% Plot of the change in Educational campaign control(U1) profile for
+	    	% the two different scenerios
+	    	%figure (3); plot(y1(1,:),y1(16,:),'r-',y2(1,:),y2(16,:),'b-.',
+	    	y3(1,:),y3(16,:),
+	    	'g-.','LineWidth',3),grid
+	    	%axis([0,100, 0, 0.7])
+	    	%xlabel('Time (days)')
+	    	%ylabel('U1 (Education control)')
+	    	%legend('\varpi31 =1000 , \varpi41 =1000, \varpi51 = 900', '\varpi32 =1, 
+	    	\varpi42 =1, \varpi52 = 100')
+	    	%legend('\beta_2 = 3.5 ','\beta_2 = 1.5 ','\beta_2 = 0.000012 ')
+	    	%legend('\omega = 0.5 ','\omega = 0.0001 ')
+	    	
+	    	% Plot of the treatment control(U2) profile for
+	    	% the two different scenerios
+	    	%figure (4); plot(y1(1,:),y1(17,:),'r-',y2(1,:),y2(17,:),'b-.'
+	    	,y3(1,:),y3(17,:),
+	    	'g-.','LineWidth',3),grid
+	    	%axis([0,100, 0, 0.4])
+	    	%xlabel('Time (days)')
+	    	%ylabel('U2(Treatment Control)')
+	    	%legend('\beta_2 = 3.5 ','\beta_2 = 1.5 ','\beta_2 = 0.000012 ')
+	    	%legend('\omega = 0.5 ','\omega = 0.0001 ')
+	    	%legend('\sigma1 =0.1 ','\sigma2 =0.01 ')
+	    	%legend('\varpi31 =1000 , \varpi41 =1000, 
+	    	\varpi51 = 900', '\varpi32 =1 ,\varpi42 =1, \varpi52 = 100')
+	    	
+	    	% Plot of the Pesticide control(U3) profile for
+	    	% the two different scenerios
+	    	%figure (5); plot(y1(1,:),y1(18,:),'r-',y2(1,:),y2(18,:),'b-.',
+	    	y3(1,:),y3(18,:),
+	    	'g-.','LineWidth',3),grid
+	    	%axis([0,100, 0, 0.6])
+	    	%xlabel('Time (days)')
+	    	%ylabel('U3(Pesticide control)')
+	    	%legend('\beta_2 = 3.5 ','\beta_2 = 1.5 ','\beta_2 = 0.000012 ')
+	    	%legend('\omega = 0.5 ','\omega = 0.0001 ')
+	    	%legend('\sigma1 =0.1 ','\sigma2 =0.01 ')
+	    	%legend('\varpi31 =1000 , \varpi41 =1000,
+	    	 \varpi51 = 900', '\varpi32 =1 ,\varpi42 =1, \varpi52 = 100')
+	    	
+	    	
+	    	%Susceptible profile
+	    	%figure (6); plot(y1(1,:),y1(2,:),'r-',y2(1,:),y2(2,:),
+	    	'g-.','LineWidth',3),grid
+	    	%xlabel('Time (days)')
+	    	%ylabel('Susceptible Human population (millions)')
+	    	%legend('R_0 > 1 ','R_0 < 1 ')
+	    	
+	    	
+	    	%Exposed profile
+	    	%figure (7); plot(y1(1,:),y1(3,:),'r-',y2(1,:),y2(3,:),
+	    	'g-.','LineWidth',3),grid
+	    	%xlabel('Time (days)')
+	    	%ylabel('Exposed Human population (millions)')
+	    	%legend('R_0 > 1 ','R_0 < 1 ')
+	    	
+	    	
+	    	%Infected profile
+	    	%figure (8); plot(y1(1,:),y1(4,:),'r-',y2(1,:),y2(4,:),
+	    	'g-.','LineWidth',3),grid
+	    	%xlabel('Time (days)')
+	    	%ylabel('Infected Human population (millions)')
+	    	%legend('R_0 > 1 ','R_0 < 1 ')
+	    	
+	    	
+	    	%Hospitalized profile
+	    	%figure (9); plot(y1(1,:),y1(5,:),'r-',y2(1,:),y2(5,:),
+	    	'g-.','LineWidth',3),grid
+	    	%xlabel('Time (days)')
+	    	%ylabel('Hospitalized Human population (millions)')
+	    	%legend('R_0 > 1 ','R_0 < 1 ')
+	    	
+	    	
+	    	%Recovered profile
+	    	%figure (10); plot(y1(1,:),y1(6,:),'r-',y2(1,:),y2(6,:),'g-.','LineWidth',3),grid
+	    	%xlabel('Time (days)')
+	    	%ylabel('Recovery Human population (millions)')
+	    	%legend('R_0 > 1 ','R_0 < 1 ')
+	    	
+	    	
+	    	
+	    	%Susceptible Rat profile
+	    	%figure (11); plot(y1(1,:),y1(7,:),'r-',y2(1,:),y2(7,:),'g-.','LineWidth',3),grid
+	    	%xlabel('Time (days)')
+	    	%ylabel('Susceptible Rat population (millions)')
+	    	%legend('R_0 > 1 ','R_0 < 1 ')
+	    	
+	    	
+	    	%Infected Rat profile
+	    	%figure (12); plot(y1(1,:),y1(8,:),'r-',y2(1,:),y2(8,:),'g-.','LineWidth',3),grid
+	    	%xlabel('Time (days)')
+	    	%ylabel('Infected Rat population (millions)')
+	    	%legend('R_0 > 1 ','R_0 < 1 ')
+	    \end{verbatim}
