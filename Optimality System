@@ -1,0 +1,217 @@
+\section*{SCRIPT FILE TO EXECUTE OPTIMALITY SYSTEM WITH RUNGE-KUTTA MATLAB CODE }
+\begin{verbatim}	
+	close
+	% global b,d,alpha,B,x10,x20  
+	flag1=0;
+	flag2=0;
+	%flag3=0;
+	%flag4=0;0.03
+	%y = Cholera1(a,B,delta,D,gamma,d,Q,e,c,w3,w4,w5)
+	while(flag1==0)
+	var1 = input('Enter a non-negative value for the Recruitment rate  Lambda: ');
+	a = var1;
+	
+	var2 = input('Enter a non-negative value for the disease transmission rate Beta: ');
+	B = var2;
+	
+	var3 = input('Enter a non-negative value for the disease induced death  for
+	 I class - delta: ');    
+	delta = var3;
+	
+	var4 = input('Enter a non-negative value for the death rate  mu: ');
+	D = var4;
+	
+	var5 = input('Enter a non-negative value for the natural immunity waning rate gamma: ');
+	gamma = var5;
+	
+	var6 = input('Enter a non-negative value for the bacteria death rate d: ');
+	d = var6;
+	
+	var7 = input('Enter a non-negative value for the half bacterial constant saturation rate: ');
+	Q = var7;
+	
+	var8 = input('Enter a non-negative value for the vaccine waning rate epsilon for
+	 V class - e: ');
+	e = var8;
+	
+	var9 = input('Enter a non-negative value for the infectious human contaminate the
+	 environment rate alpha for B class - c: ');
+	c = var9;
+	
+	
+	var10 = input('Enter a non-negative weight for the  education and sanitation  u1 - w3: ');
+	w3 = var10;
+	
+	var11 = input('Enter a non-negative weight for the vaccination control u2 - w4: ');
+	w4 = var11;
+	
+	var12 = input('Enter a non-negative weight for the treatment control u3 - w5: ');
+	w5 = var12;
+	
+	flag1=1;
+	end
+	
+	
+	disp('           ')
+	disp('One moment please...')
+	disp('    ')
+	y1 = Cholera1(a,B,delta,D,gamma,d,Q,e,c,w3,w4,w5);
+	while(flag2==0)
+	
+	var22 = input('Enter a non-negative value for the disease transmission rate Beta: ');
+	B = var22;
+	
+	%var23 = input('Enter a non-negative value for the disease induced death  for I class - delta: ');    
+	%delta = var23;
+	
+	%var25 = input('Enter a non-negative value for the natural immunity waning rate gamma: ');
+	%gamma = var25;
+	
+	%var26 = input('Enter a non-negative value for the bacteria death rate d: ');
+	%d = var26;
+	
+	%var27 = input('Enter a non-negative value for the half bacterial constant saturation rate: ');
+	%Q = var27;
+	
+	%var28 = input('Enter a non-negative value for the vaccine waning rate epsilon for V class - e: ');
+	%e = var28;
+	
+	%var29 = input('Enter a non-negative value for the infectious human contaminate the environment rate alpha for B class - c: ');
+	%c = var29;
+	
+	
+	var30 = input('Enter a non-negative weight for the  education and sanitation  u1 - w3: ');
+	w3 = var30;
+	
+	var31 = input('Enter a non-negative weight for the vaccination control u2 - w4: ');
+	w4 = var31;
+	
+	var32 = input('Enter a non-negative weight for the treatment control u3 - w5: ');
+	w5 = var32;
+	
+	y2 = Cholera1(a,B,delta,D,gamma,d,Q,e,c,w3,w4,w5);
+	flag2=1;
+	end    
+	
+	
+	% Plot of the prevalence for the two different scenerios
+	%figure (1); plot(y1(1,:),y1(4,:)+y1(6,:),'r-',y2(1,:),y2(4,:)+y2(6,:),'b-.','LineWidth',3),grid
+	%ylabel('Prevalence population (millions)')
+	% legend('\beta = 3.2.','0.0008')
+	% legend('\varpi31 =10 , \varpi41 =1000', '\varpi32 =1 ,\varpi42 =1')
+	
+	
+	
+	%Plot of the incidence for the two different scenerios
+	% figure (2); plot( y1(1,:),( 1./( y1(2,:)+y1(3,:)+y1(4,:)+y1(5,:)+y1(6,:)).*(B.*y1(2,:).*y1(3,:) + B.*y1(2,:).*y1(4,:))),'r-',y2(1,:),( 1./( y2(2,:)+y2(3,:)+y2(4,:)+y2(5,:))).*(B.*y2(2,:).*y2(3,:) + B.*y2(2,:).*y2(4,:)),'b-.','LineWidth',3),grid
+	%xlabel('Time (days)')
+	%ylabel(' Cholera new cases (millions)')
+	%legend('u2=0.5, u3=0','u2=0, u3=0.98')
+	%legend('\beta = 3.2.','0.0008')
+	%legend('\varpi31 =10 , \varpi41 =1000', '\varpi32 =1 ,\varpi42 =1')
+	
+	% Plot of the disease population profile for the first scenerio
+	%figure (3); plot(y1(1,:),y1(2,:),'b-',y2(1,:),y1(5,:),'g--','LineWidth',3),grid
+	%xlabel('Time (days)')
+	%ylabel('Population (millions)')
+	%legend('S','R')
+	
+	% Plot of the disease population profile for the second scenerio
+	%figure (4); plot(y2(1,:),y2(3,:),'m-',y2(1,:),y2(4,:),'r--','LineWidth',3),grid
+	%xlabel('Time (days)')
+	%ylabel('Population (millions)')
+	%legend('\beta = 2.2','0.000015')
+	
+	
+	
+	% Plot of the change in sanitation habit control(U1) profile for
+	% the two different scenerios
+	%figure (5); plot(y1(1,:),y1(12,:),'r-',y2(1,:),y2(12,:),'b-.','LineWidth',3),grid
+	%axis([0,100, 0, 0.9])
+	%xlabel('Time (days)')
+	%ylabel('U1 (Sanitation Control)')
+	%legend('\beta = 3.2.','0.0008')
+	%legend('\varpi31 =10 , \varpi41 =1000', '\varpi32 =10 , \varpi42 =1000', '\varpi33 =1 ,\varpi43 =1000')
+	
+	% Plot of the  Cholera treatment control(U3) profile for
+	%the two different scenerios
+	%figure (7); plot(y1(1,:),y1(13,:),'r-',y2(1,:),y2(13,:),'b-.','LineWidth',3),grid
+	%axis([0,100, 0, 0.8])
+	%xlabel('Time (days)')
+	%ylabel('U3(Vaccination Control)')
+	%legend('\beta = 3.2.','0.0008')
+	%legend('\sigma1 =0.1 ','\sigma2 =0.01 ')
+	% legend('\varpi31 =10 , \varpi41 =1000', '\varpi32 =1 ,\varpi42 =1', '\varpi33 =10 , \varpi43 =1000')
+	
+	
+	% Plot of the  Cholera treatment control(U3) profile for
+	%the two different scenerios
+	figure (6); plot(y1(1,:),y1(14,:),'r-',y2(1,:),y2(14,:),'b-.','LineWidth',3),grid
+	axis([0,100, 0, 1.0])
+	xlabel('Time (days)')
+	ylabel('U3(Treatment Control)')
+	legend('\beta = 3.2.','0.0008')
+	% legend('\sigma1 =0.1 ','\sigma2 =0.01 ')
+	legend('\varpi31 =10 , \varpi41 =1000', '\varpi32 =1 ,\varpi42 =1', '\varpi33 =10 , \varpi43 =1000')
+	
+	% Plot of the  Cholera vaccination control(U2) profile for
+	%the two different scenerios
+	%figure (4); plot(y1(1,:),y1(13,:),'r-',y2(1,:),y2(13,:),'b-.','LineWidth',3),grid
+	%axis([0,100, 0, 0.9])
+	%xlabel('Time (days)')
+	%ylabel('U2(Vaccination)')
+	%legend('\beta = 3.2.','0.0008')
+	
+	%Susceptible
+	%figure (7); plot(y1(1,:),y1(2,:),'b-.','LineWidth',3),grid
+	%xlabel('Time (yrs)')
+	%ylabel('Susceptible population (millions)')
+	%legend('S')
+	
+	
+	%vaccinated
+	%figure (8); plot(y1(1,:),y1(3,:),'m-.','LineWidth',3),grid
+	%xlabel('Time (yrs)')
+	%ylabel('Carrier population (millions)')
+	%legend('C')
+	
+	%infective
+	%figure (9); plot(y1(1,:),y1(4,:),'r-.','LineWidth',3),grid
+	%xlabel('Time (yrs)')
+	%ylabel('Infected population (millions)')
+	%%legend('I')
+	
+	
+	
+	%Suscep on Vac
+	%figure (11); plot(y1(1,:),y1(2,:),'b-',y2(1,:),y2(2,:),'g-','LineWidth',3),grid
+	%xlabel('Time (days)')
+	%ylabel('Susceptible population (millions)')
+	%legend('R_0 > 1 ','R_0 < 1 ')
+	
+	%Vaccinated
+	%figure (12); plot(y1(1,:),y1(3,:),'b-',y2(1,:),y2(3,:),'g-','LineWidth',3),grid
+	%xlabel('Time (days)')
+	%ylabel('Vaccinated population (millions)')
+	%legend('R_0 > 1 ','R_0 < 1 ')
+	
+	%Infected
+	%figure (13); plot(y1(1,:),y1(4,:),'b-',y2(1,:),y2(4,:),'g-','LineWidth',3),grid
+	%xlabel('Time (days)')
+	%ylabel('Infected population (millions)')
+	%legend('R_0 > 1 ','R_0 < 1 ')
+	
+	%Recovered
+	%figure (14); plot(y1(1,:),y1(5,:),'b-',y2(1,:),y2(5,:),'g-','LineWidth',3),grid
+	%xlabel('Time (days)')
+	%ylabel('Recovered population (millions)')
+	%legend('R_0 > 1 ','R_0 < 1 ')
+	
+	%Bacteria
+	%figure (15); plot(y1(1,:),y1(6,:),'b-',y2(1,:),y2(6,:),'g-','LineWidth',3),grid
+	%xlabel('Time (days)')
+	%ylabel('Bacteria concentration (millions)')
+	%legend('R_0 > 1 ','R_0 < 1 ')		                           
+	\end{verbatim}
+	
+\end{document}	
