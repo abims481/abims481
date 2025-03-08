@@ -1,0 +1,59 @@
+% Lassa Fever Model Simulation in MATLAB
+
+clc; clear; close all;
+
+% Define parameters
+Lambda = 0.3456;  % Recruitment rate
+alpha1 = 0.048; alpha2 = 0.048; alpha3 = 0.048; alpha4 = 0.048;
+rho = 0.3333;  % Progression rate
+mu = 0.0003465;  % Natural death rate
+tau1 = 0.1;  % Progression rate from asymptomatic to hospitalized
+tau2 = 0.15; % Progression rate from infected to hospitalized
+gamma = 0.24;  % Progression rate from asymptomatic to infected
+nu = 0.29997;  % Recovery rate
+phi = 0.04;   % Natural death of rodents
+d = 0.1;   % Death rate due to predators
+theta = 0.0024;  % Death rate due to disease
+Omega = 0.021;  % Recruitment rate of rodents
+
+% Initial conditions
+Sh0 = 140885566; Eh0 = 78879117; Ah0 = 23663735; Ih0 = 39439558;
+Hh0 = 50482635; Rh0 = 12620659; Sv0 = 150000000; Ev0 = 90000000; Iv0 = 7500000;
+
+% Control values (constant for now, can be optimized later)
+u1 = 0.7; u2 = 0.5; u3 = 0.96;
+
+% Time span
+tspan = [0 365];  % Simulating for 1 year
+
+% Solve the system using ode45
+[t, Y] = ode45(@(t, y) lassa_fever_model(t, y, Lambda, alpha1, alpha2, alpha3, alpha4, rho, mu, tau1, tau2, gamma, nu, phi, d, theta, Omega, u1, u2, u3), tspan, [Sh0 Eh0 Ah0 Ih0 Hh0 Rh0 Sv0 Ev0 Iv0]);
+
+% Extract solutions
+Sh = Y(:,1); Eh = Y(:,2); Ah = Y(:,3); Ih = Y(:,4);
+Hh = Y(:,5); Rh = Y(:,6); Sv = Y(:,7); Ev = Y(:,8); Iv = Y(:,9);
+
+% Plot results
+figure;
+plot(t, Sh, 'b:', t, Eh, 'g--', t, Ah, 'm-.', t, Ih, 'r-', t, Hh, 'c-', t, Rh, 'k:');
+legend('Susceptible', 'Exposed', 'Asymptomatic', 'Infected', 'Hospitalized', 'Recovered');
+xlabel('Time (days)'); ylabel('Population');
+title('Lassa Fever Dynamics Over Time'); grid on;
+
+% Function defining the system of ODEs
+function dydt = lassa_fever_model(t, y, Lambda, alpha1, alpha2, alpha3, alpha4, rho, mu, tau1, tau2, gamma, nu, phi, d, theta, Omega, u1, u2, u3)
+    Sh = y(1); Eh = y(2); Ah = y(3); Ih = y(4);
+    Hh = y(5); Rh = y(6); Sv = y(7); Ev = y(8); Iv = y(9);
+    
+    dSh = Lambda - alpha1*Sh*Iv - alpha2*Sh*Ih*(1 - u1) - alpha3*Sh*Ah - alpha4*Sh*Hh - mu*Sh + nu*Rh;
+    dEh = alpha1*Sh*Iv + alpha2*Sh*Ih*(1 - u1) + alpha3*Sh*Ah + alpha4*Sh*Hh - rho*Eh - mu*Eh;
+    dAh = (1 - theta)*rho*Eh - gamma*Ah - mu*Ah - tau1*Ah;
+    dIh = gamma*Ah + theta*rho*Eh - tau2*Ih - mu*Ih - u3*Ih;
+    dHh = tau1*Ah + tau2*Ih - nu*Hh - mu*Hh + u3*Ih;
+    dRh = nu*Hh - nu*Rh - mu*Rh;
+    dSv = Omega - alpha1*Sv*Iv*(1 - u2) - alpha2*Sv*Iv - phi*Sv - d*Sv;
+    dEv = alpha1*Sv*Iv*(1 - u2) + alpha2*Sv*Iv - phi*Ev - d*Ev - theta*Ev;
+    dIv = theta*Ev - phi*Iv - d*Iv;
+    
+    dydt = [dSh; dEh; dAh; dIh; dHh; dRh; dSv; dEv; dIv];
+end
