@@ -1,0 +1,38 @@
+# Step 1: Modify the Model Equations to Include Controls
+# Introducing control variables:
+# u1(t) - Vaccination (reduces susceptibles S)
+# u2(t) - Treatment (increases recovery rates for X, Y, Z)
+# u3(t) - Quarantine (reduces transmission rates)
+
+from sympy import symbols, Function
+
+# Define time variable
+t = symbols('t')
+
+# Define state variables
+S = Function('S')(t)  # Susceptible
+X = Function('X')(t)  # Lassa fever only infected
+Y = Function('Y')(t)  # COVID-19 only infected
+Z = Function('Z')(t)  # Co-infected
+R = Function('R')(t)  # Recovered
+
+# Define control variables
+u1 = Function('u1')(t)  # Vaccination
+u2 = Function('u2')(t)  # Treatment
+u3 = Function('u3')(t)  # Quarantine
+
+# Define parameters
+Lambda, beta1, beta2, mu, gamma1, gamma2, delta1, delta2, omega = symbols('Lambda beta1 beta2 mu gamma1 gamma2 delta1 delta2 omega')
+
+# Modified system of equations
+dS_dt = Lambda - beta1*(X + Z)*(S/(S + X + Y + Z + R)) - beta2*(Y + Z)*(S/(S + X + Y + Z + R)) - mu*S - u1*S
+
+dX_dt = beta1*(X + Z)*(S/(S + X + Y + Z + R)) - beta2*(Y + Z)*(X/(S + X + Y + Z + R)) - mu*X - gamma1*X - delta1*X + gamma2*Z - u3*X
+
+dY_dt = beta2*(Y + Z)*(S/(S + X + Y + Z + R)) - beta1*(X + Y)*(Y/(S + X + Y + Z + R)) - mu*Y - gamma2*Y - delta2*Y + gamma1*Z - u3*Y
+
+dZ_dt = beta1*(X + Z)*(Y/(S + X + Y + Z + R)) + beta2*(Y + Z)*(X/(S + X + Y + Z + R)) - (delta1 + delta2 + gamma1 + gamma2 + mu)*Z - u3*Z
+
+dR_dt = gamma1*X + gamma2*Y - omega*R - mu*R + u2*(X + Y + Z)
+
+# The next step will be defining the optimal control problem and deriving the necessary conditions.
